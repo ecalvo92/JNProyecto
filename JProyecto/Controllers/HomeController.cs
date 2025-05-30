@@ -1,6 +1,5 @@
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using JProyecto.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace JProyecto.Controllers;
 
@@ -13,19 +12,25 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    [HttpGet]
     public IActionResult Index()
     {
         return View();
     }
+
+    [HttpPost]
+    public IActionResult Index(Autenticacion autenticacion)
+    {
+        ViewBag.Mensaje = "No se pudo autenticar";
+        return View();
+
+        //return RedirectToAction("Principal","Home");
+    }
+
 
     public IActionResult Principal()
     {
         return View();
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
 }
