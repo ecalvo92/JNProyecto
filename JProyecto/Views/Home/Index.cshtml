@@ -12,14 +12,14 @@
                 <h5 class="font-medium m-b-20">Iniciar Sesión</h5>
             </div>
 
-            <br/>
+            <br />
 
             <div class="row">
                 <div class="col-12">
 
                     <form class="form-horizontal m-t-20" id="loginform" asp-controller="Home" asp-action="Index">
 
-                        @ViewBag.Mensaje
+                        <input id="Mensaje" type="hidden" value="@ViewBag.Mensaje">
 
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -56,3 +56,6 @@
         </div>
     </div>
 </div>
+
+<script src="~/lib/jquery.min.js"></script>
+<script src="~/js/index.js"></script>
