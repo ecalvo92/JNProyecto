@@ -7,11 +7,10 @@ namespace JProyecto.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    private readonly IConfiguration _configuration;
+    public HomeController(IConfiguration configuration)
     {
-        _logger = logger;
+        _configuration = configuration;
     }
 
     #region Index
@@ -25,10 +24,19 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Index(Autenticacion autenticacion)
     {
-        ViewBag.Mensaje = "No se pudo autenticar";
-        return View();
+        using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+        {
+            var resultado = context.QueryFirstOrDefault<Autenticacion>("ValidarInicioSesion",
+                new { autenticacion.NombreUsuario,
+                      autenticacion.Contrasenna }
+                );
 
-        //return RedirectToAction("Principal","Home");
+            if (resultado != null)
+                return RedirectToAction("Principal", "Home");
+
+            ViewBag.Mensaje = "No se pudo autenticar";
+            return View();
+        }
     }
 
     #endregion
@@ -44,7 +52,7 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Registro(Autenticacion autenticacion)
     {
-        using (var context = new SqlConnection("Server=EDUARDO; DataBase=JNDataBase; Integrated Security=True; TrustServerCertificate=True"))
+        using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
         {
             var Estado = true;
 
@@ -57,11 +65,9 @@ public class HomeController : Controller
                 );
 
             if (resultado > 0)
-            {
                 return RedirectToAction("Index", "Home");
-            }
 
-            ViewBag.Mensaje = "No se pudo autenticar";
+            ViewBag.Mensaje = "No se pudo registrar";
             return View();
         }
     }
