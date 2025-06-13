@@ -1,16 +1,16 @@
-using Dapper;
 using JProyecto.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 
 namespace JProyecto.Controllers;
 
 public class HomeController : Controller
 {
     private readonly IConfiguration _configuration;
-    public HomeController(IConfiguration configuration)
+    private readonly IHttpClientFactory _http;
+    public HomeController(IConfiguration configuration, IHttpClientFactory http)
     {
         _configuration = configuration;
+        _http = http;
     }
 
     #region Index
@@ -24,14 +24,12 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Index(Autenticacion autenticacion)
     {
-        using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+        using (var http = _http.CreateClient())
         {
-            var resultado = context.QueryFirstOrDefault<Autenticacion>("ValidarInicioSesion",
-                new { autenticacion.NombreUsuario,
-                      autenticacion.Contrasenna }
-                );
+            http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+            var resultado = http.PostAsJsonAsync("api/Home/Index", autenticacion).Result;
 
-            if (resultado != null)
+            if (resultado.IsSuccessStatusCode)
                 return RedirectToAction("Principal", "Home");
 
             ViewBag.Mensaje = "No se pudo autenticar";
@@ -52,19 +50,12 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Registro(Autenticacion autenticacion)
     {
-        using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+        using (var http = _http.CreateClient())
         {
-            var Estado = true;
+            http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+            var resultado = http.PostAsJsonAsync("api/Home/Registro", autenticacion).Result;
 
-            var resultado = context.Execute("RegistrarUsuario",
-                new { autenticacion.Nombre, 
-                      autenticacion.Correo, 
-                      autenticacion.NombreUsuario, 
-                      autenticacion.Contrasenna,
-                      Estado }
-                );
-
-            if (resultado > 0)
+            if (resultado.IsSuccessStatusCode)
                 return RedirectToAction("Index", "Home");
 
             ViewBag.Mensaje = "No se pudo registrar";
