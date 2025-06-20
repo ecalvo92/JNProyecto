@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using JApi.Models;
+using JApi.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -17,6 +18,8 @@ namespace JApi.Controllers
         {
             _configuration = configuration;
         }
+
+        Utilitarios util = new Utilitarios();
 
         [HttpPost]
         [Route("Registro")]
@@ -36,9 +39,9 @@ namespace JApi.Controllers
                 );
 
                 if (resultado > 0)
-                    return Ok();
+                    return Ok(util.RespuestaCorrecta(null));
                 else
-                    return BadRequest();
+                    return BadRequest(util.RespuestaIncorrecta("Su información no fue registrada"));
             }
         }
 
@@ -57,9 +60,9 @@ namespace JApi.Controllers
                 );
 
                 if (resultado != null)
-                    return Ok();
+                    return Ok(util.RespuestaCorrecta(resultado));
                 else
-                    return NotFound();
+                    return BadRequest(util.RespuestaIncorrecta("Su información no fue validada"));                
             }
         }
 
