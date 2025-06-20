@@ -14,12 +14,12 @@ namespace JApi.Controllers
     public class HomeController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public HomeController(IConfiguration configuration)
+        private readonly IUtilitarios _utilitarios;
+        public HomeController(IConfiguration configuration, IUtilitarios utilitarios)
         {
             _configuration = configuration;
+            _utilitarios = utilitarios;
         }
-
-        Utilitarios util = new Utilitarios();
 
         [HttpPost]
         [Route("Registro")]
@@ -32,16 +32,16 @@ namespace JApi.Controllers
                     {
                         autenticacion.Nombre,
                         autenticacion.Correo,
-                        autenticacion.NombreUsuario,
+                        autenticacion.Identificacion,
                         autenticacion.Contrasenna,
                         autenticacion.Estado
                     }
                 );
 
                 if (resultado > 0)
-                    return Ok(util.RespuestaCorrecta(null));
+                    return Ok(_utilitarios.RespuestaCorrecta(null));
                 else
-                    return BadRequest(util.RespuestaIncorrecta("Su información no fue registrada"));
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("Su información no fue registrada"));
             }
         }
 
@@ -54,15 +54,15 @@ namespace JApi.Controllers
                 var resultado = context.QueryFirstOrDefault<Autenticacion>("ValidarInicioSesion",
                     new
                     {
-                        autenticacion.NombreUsuario,
+                        autenticacion.Correo,
                         autenticacion.Contrasenna
                     }
                 );
 
                 if (resultado != null)
-                    return Ok(util.RespuestaCorrecta(resultado));
+                    return Ok(_utilitarios.RespuestaCorrecta(resultado));
                 else
-                    return BadRequest(util.RespuestaIncorrecta("Su información no fue validada"));                
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("Su información no fue validada"));                
             }
         }
 

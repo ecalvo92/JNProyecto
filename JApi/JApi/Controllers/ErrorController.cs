@@ -15,12 +15,12 @@ namespace JApi.Controllers
     public class ErrorController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public ErrorController(IConfiguration configuration)
+        private readonly IUtilitarios _utilitarios;
+        public ErrorController(IConfiguration configuration, IUtilitarios utilitarios)
         {
             _configuration = configuration;
+            _utilitarios = utilitarios;
         }
-
-        Utilitarios util = new Utilitarios();
 
         [Route("CapturarError")]
         public IActionResult CapturarError()
@@ -43,7 +43,7 @@ namespace JApi.Controllers
                 );
             }
 
-            return StatusCode(500, util.RespuestaIncorrecta("Se presentó un error interno"));
+            return StatusCode(500, _utilitarios.RespuestaIncorrecta("Se presentó un error interno"));
         }
     }
 }

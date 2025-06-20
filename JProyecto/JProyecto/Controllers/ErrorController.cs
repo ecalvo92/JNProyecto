@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 
 namespace JProyecto.Controllers
 {
@@ -6,6 +7,8 @@ namespace JProyecto.Controllers
     {
         public IActionResult CapturarError()
         {
+            HttpContext.Features.Get<IExceptionHandlerFeature>();
+
             return View("Error");
         }
     }
