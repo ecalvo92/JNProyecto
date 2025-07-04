@@ -1,5 +1,6 @@
 using JProyecto.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace JProyecto.Controllers;
 
@@ -59,6 +60,37 @@ public class HomeController : Controller
         {
             http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
             var resultado = http.PostAsJsonAsync("api/Home/Registro", autenticacion).Result;
+
+            if (resultado.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaEstandar>().Result;
+                ViewBag.Mensaje = respuesta?.Mensaje;
+                return View();
+            }
+        }
+    }
+
+    #endregion
+
+    #region Recuperar Acceso
+
+    [HttpGet]
+    public IActionResult RecuperarAcceso()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult RecuperarAcceso(Autenticacion autenticacion)
+    {
+        using (var http = _http.CreateClient())
+        {
+            http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+            var resultado = http.PostAsJsonAsync("api/Home/RecuperarAcceso", autenticacion).Result;
 
             if (resultado.IsSuccessStatusCode)
             {

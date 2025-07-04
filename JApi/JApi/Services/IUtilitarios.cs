@@ -7,5 +7,9 @@ namespace JApi.Services
         RespuestaEstandar RespuestaCorrecta(object? contenido);
 
         RespuestaEstandar RespuestaIncorrecta(string mensaje);
+
+        string GenerarContrasenna(int longitud);
+
+        void EnviarCorreo(string destinatario, string asunto, string cuerpo);
     }
 }
