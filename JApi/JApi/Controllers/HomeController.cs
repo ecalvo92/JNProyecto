@@ -15,10 +15,12 @@ namespace JApi.Controllers
     public class HomeController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private readonly IHostEnvironment _environment;
         private readonly IUtilitarios _utilitarios;
-        public HomeController(IConfiguration configuration, IUtilitarios utilitarios)
+        public HomeController(IConfiguration configuration, IHostEnvironment environment, IUtilitarios utilitarios)
         {
             _configuration = configuration;
+            _environment = environment;
             _utilitarios = utilitarios;
         }
 
@@ -70,7 +72,8 @@ namespace JApi.Controllers
 
                 if (resultado != null)
                 {
-                    var Contrasenna = _utilitarios.GenerarContrasenna(10);
+                    var ContrasennaNotificar = _utilitarios.GenerarContrasenna(10);
+                    var Contrasenna = _utilitarios.Encrypt(ContrasennaNotificar);
 
                     var resultadoActualizacion = context.Execute("ActualizarContrasenna",
                         new {   resultado.IdUsuario,
@@ -78,7 +81,13 @@ namespace JApi.Controllers
 
                     if (resultadoActualizacion > 0)
                     {
-                        _utilitarios.EnviarCorreo(resultado.Correo!, "Recuperación de Acceso", Contrasenna);
+                        var ruta = Path.Combine(_environment.ContentRootPath, "Correos.html");
+                        var html = System.IO.File.ReadAllText(ruta, UTF8Encoding.UTF8);
+
+                        html = html.Replace("@@Usuario", resultado.Nombre);
+                        html = html.Replace("@@Contrasenna", ContrasennaNotificar);
+
+                        _utilitarios.EnviarCorreo(resultado.Correo!, "Recuperación de Acceso", html);
                         return Ok(_utilitarios.RespuestaCorrecta(null));
                     }
                 }

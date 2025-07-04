@@ -1,7 +1,10 @@
+using JProyecto.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
+builder.Services.AddScoped<IUtilitarios, Utilitarios>();
 
 var app = builder.Build();
 

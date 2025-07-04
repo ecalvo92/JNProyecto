@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Contraseña temporal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .header {
+            background-color: #005ea5;
+            color: white;
+            padding: 10px;
+            border-radius: 6px 6px 0 0;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 15px;
+        }
+
+        .footer {
+            font-size: 12px;
+            color: #888888;
+            padding-top: 10px;
+            border-top: 1px solid #dddddd;
+        }
+
+        .password {
+            font-weight: bold;
+            background-color: #eeeeee;
+            padding: 10px;
+            display: inline-block;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            Acceso temporal al sistema
+        </div>
+        <div class="content">
+            <p>Estimado usuario: @@Usuario</p>
+            <p>Se ha generado una contraseña temporal para que acceda al sistema.</p>
+
+            <p>Su contraseña temporal es:</p>
+            <p class="password">@@Contrasenna</p>
+
+            <p><strong>Importante:</strong> procure cambiar su contraseña una vez que haya ingresado nuevamente al sistema.</p>
+
+            <p>Por favor, no responda a este correo. Es un mensaje automático.</p>
+        </div>
+        <div class="footer">
+            © 2025 - Sistema de Autenticación
+        </div>
+    </div>
+</body>
+</html>

@@ -25,7 +25,7 @@ CREATE TABLE [dbo].[TUsuario](
 	[Nombre] [varchar](255) NOT NULL,
 	[Correo] [varchar](100) NOT NULL,
 	[Identificacion] [varchar](20) NOT NULL,
-	[Contrasenna] [varchar](10) NOT NULL,
+	[Contrasenna] [varchar](255) NOT NULL,
 	[Estado] [bit] NOT NULL,
  CONSTRAINT [PK_TUsuario] PRIMARY KEY CLUSTERED 
 (
@@ -45,7 +45,7 @@ GO
 
 SET IDENTITY_INSERT [dbo].[TUsuario] ON 
 GO
-INSERT [dbo].[TUsuario] ([IdUsuario], [Nombre], [Correo], [Identificacion], [Contrasenna], [Estado]) VALUES (1, N'Eduardo Calvo Castillo', N'ecalvo90415@ufide.ac.cr', N'304590415', N'90415', 1)
+INSERT [dbo].[TUsuario] ([IdUsuario], [Nombre], [Correo], [Identificacion], [Contrasenna], [Estado]) VALUES (1, N'Sebastián Hernández Jiménez', N'shernandez30307@ufide.ac.cr', N'402530307', N'zvuNXYgmZrdeBRbddhvsvSwtN2liS4MxhoFHatxAx5g=', 1)
 GO
 SET IDENTITY_INSERT [dbo].[TUsuario] OFF
 GO
@@ -60,6 +60,19 @@ ALTER TABLE [dbo].[TUsuario] ADD  CONSTRAINT [uk_NombreUsuario] UNIQUE NONCLUSTE
 (
 	[Identificacion] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+
+CREATE PROCEDURE [dbo].[ActualizarContrasenna]
+	@IdUsuario bigint,
+	@Contrasenna varchar(255)
+AS
+BEGIN
+	
+	UPDATE	TUsuario
+	SET		Contrasenna = @Contrasenna
+	WHERE	IdUsuario = @IdUsuario
+
+END
 GO
 
 CREATE PROCEDURE [dbo].[RegistrarError]
@@ -79,7 +92,7 @@ CREATE PROCEDURE [dbo].[RegistrarUsuario]
 	@Nombre varchar(255),
 	@Correo varchar(100),
 	@Identificacion varchar(20),
-	@Contrasenna varchar(10),
+	@Contrasenna varchar(255),
 	@Estado bit
 AS
 BEGIN
@@ -97,9 +110,26 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [dbo].[ValidarCorreo]
+	@Correo varchar(100)
+AS
+BEGIN
+
+	SELECT	IdUsuario,
+			Nombre,
+			Correo,
+			Identificacion,
+			Estado
+	  FROM	dbo.TUsuario
+	WHERE	Correo = @Correo
+		AND Estado = 1
+	
+END
+GO
+
 CREATE PROCEDURE [dbo].[ValidarInicioSesion]
 	@Correo varchar(100),
-	@Contrasenna varchar(10)
+	@Contrasenna varchar(255)
 AS
 BEGIN
 

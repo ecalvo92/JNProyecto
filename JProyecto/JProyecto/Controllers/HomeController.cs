@@ -1,16 +1,17 @@
 using JProyecto.Models;
+using JProyecto.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Text;
 
 namespace JProyecto.Controllers;
-
 public class HomeController : Controller
 {
     private readonly IConfiguration _configuration;
+    private readonly IUtilitarios _utilitarios;
     private readonly IHttpClientFactory _http;
-    public HomeController(IConfiguration configuration, IHttpClientFactory http)
+    public HomeController(IConfiguration configuration, IUtilitarios utilitarios, IHttpClientFactory http)
     {
         _configuration = configuration;
+        _utilitarios = utilitarios;
         _http = http;
     }
 
@@ -25,6 +26,7 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Index(Autenticacion autenticacion)
     {
+        autenticacion.Contrasenna = _utilitarios.Encrypt(autenticacion.Contrasenna!);
         using (var http = _http.CreateClient())
         {
             http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
@@ -56,6 +58,7 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Registro(Autenticacion autenticacion)
     {
+        autenticacion.Contrasenna = _utilitarios.Encrypt(autenticacion.Contrasenna!);
         using (var http = _http.CreateClient())
         {
             http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
