@@ -69,7 +69,7 @@ namespace JApi.Controllers
 
         [HttpPost]
         [Route("RecuperarAcceso")]
-        [Authorize]
+        [AllowAnonymous]
         public IActionResult RecuperarAcceso(Autenticacion autenticacion)
         {
             using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))

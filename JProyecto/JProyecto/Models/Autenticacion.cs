@@ -8,5 +8,6 @@
         public string? Identificacion { get; set; }
         public string? Contrasenna { get; set; }
         public bool Estado { get; set; } = true;
+        public string? Token { get; set; }
     }
 }

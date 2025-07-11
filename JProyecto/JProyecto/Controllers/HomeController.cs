@@ -33,7 +33,9 @@ public class HomeController : Controller
             var resultado = http.PostAsJsonAsync("api/Home/Index", autenticacion).Result;
 
             if (resultado.IsSuccessStatusCode)
-            {
+             {
+                HttpContext.Session.SetString("JWT", "");
+
                 return RedirectToAction("Principal", "Home");
             }
             else
