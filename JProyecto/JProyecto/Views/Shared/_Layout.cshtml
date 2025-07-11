@@ -9,6 +9,7 @@
     <meta name="author" content="">
     <title>Proyecto Web JN</title>
     <link href="~/css/style.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -63,15 +64,15 @@
                                 <div class="profile-dis scrollable">
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="javascript:void(0)">
-                                        <i class="ti-settings m-r-5 m-l-5"></i> Account Setting
+                                        <i class="ti-user mr-3"></i> Perfil
                                     </a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="javascript:void(0)">
-                                        <i class="ti-settings m-r-5 m-l-5"></i> Account Setting
+                                        <i class="ti-lock mr-3"></i> Seguridad
                                     </a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="javascript:void(0)">
-                                        <i class="fa fa-power-off m-r-5 m-l-5"></i> Logout
+                                    <a class="dropdown-item" href="@Url.Action("CerrarSesion","Home")">
+                                        <i class="fa fa-sign-out mr-3"></i> Cerrar Sesión
                                     </a>
                                     
                                 </div>
@@ -86,14 +87,10 @@
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
                         
-                        <li class="nav-small-cap">
-                            <i class="mdi mdi-dots-horizontal"></i>
-                            <span class="hide-menu">Forms</span>
-                        </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="form-repeater.html" aria-expanded="false">
-                                <i class="mdi mdi-creation"></i>
-                                <span class="hide-menu">Form Repeater</span>
+                                <i class="fa fa-tag"></i>
+                                <span class="hide-menu">Productos</span>
                             </a>
                         </li>
 

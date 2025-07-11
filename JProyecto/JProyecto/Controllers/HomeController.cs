@@ -114,6 +114,13 @@ public class HomeController : Controller
     #endregion
 
     [HttpGet]
+    public IActionResult CerrarSesion()
+    {
+        HttpContext.Session.Clear();
+        return RedirectToAction("Index", "Home");
+    }
+
+    [HttpGet]
     public IActionResult Principal()
     {
         return View();
