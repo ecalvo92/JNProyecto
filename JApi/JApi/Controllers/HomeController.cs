@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using JApi.Models;
 using JApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -26,6 +27,7 @@ namespace JApi.Controllers
 
         [HttpPost]
         [Route("Registro")]
+        [AllowAnonymous]
         public IActionResult Registro(Autenticacion autenticacion)
         {
             using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
@@ -46,6 +48,7 @@ namespace JApi.Controllers
 
         [HttpPost]
         [Route("Index")]
+        [AllowAnonymous]
         public IActionResult Index(Autenticacion autenticacion)
         {
             using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
@@ -55,7 +58,10 @@ namespace JApi.Controllers
                             autenticacion.Contrasenna   });
 
                 if (resultado != null)
+                {
+                    resultado.Token = _utilitarios.GenerarToken(resultado.IdUsuario);
                     return Ok(_utilitarios.RespuestaCorrecta(resultado));
+                }
                 else
                     return BadRequest(_utilitarios.RespuestaIncorrecta("Su información no fue validada"));                
             }
@@ -63,6 +69,7 @@ namespace JApi.Controllers
 
         [HttpPost]
         [Route("RecuperarAcceso")]
+        [Authorize]
         public IActionResult RecuperarAcceso(Autenticacion autenticacion)
         {
             using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
