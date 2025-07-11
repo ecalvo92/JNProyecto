@@ -45,7 +45,11 @@ GO
 
 SET IDENTITY_INSERT [dbo].[TUsuario] ON 
 GO
-INSERT [dbo].[TUsuario] ([IdUsuario], [Nombre], [Correo], [Identificacion], [Contrasenna], [Estado]) VALUES (1, N'Sebastián Hernández Jiménez', N'shernandez30307@ufide.ac.cr', N'402530307', N'zvuNXYgmZrdeBRbddhvsvSwtN2liS4MxhoFHatxAx5g=', 1)
+INSERT [dbo].[TUsuario] ([IdUsuario], [Nombre], [Correo], [Identificacion], [Contrasenna], [Estado]) VALUES (1, N'Sebastián Hernández Jiménez', N'shernandez30307@ufide.ac.cr', N'402530307', N'KUHYbrbI+osmP8bERveLUw==', 1)
+GO
+INSERT [dbo].[TUsuario] ([IdUsuario], [Nombre], [Correo], [Identificacion], [Contrasenna], [Estado]) VALUES (2, N'string', N'string', N'string', N'string', 1)
+GO
+INSERT [dbo].[TUsuario] ([IdUsuario], [Nombre], [Correo], [Identificacion], [Contrasenna], [Estado]) VALUES (3, N'string', N'string2', N'string2', N'string', 1)
 GO
 SET IDENTITY_INSERT [dbo].[TUsuario] OFF
 GO
