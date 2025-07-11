@@ -33,13 +33,14 @@ public class HomeController : Controller
             var resultado = http.PostAsJsonAsync("api/Home/Index", autenticacion).Result;
 
             if (resultado.IsSuccessStatusCode)
-             {
-                HttpContext.Session.SetString("JWT", "");
-
+            {
+                var datos = resultado.Content.ReadFromJsonAsync<RespuestaEstandar<Autenticacion>>().Result;
+                HttpContext.Session.SetString("Nombre", datos?.Contenido?.Nombre!);
+                HttpContext.Session.SetString("JWT", datos?.Contenido?.Token!);
                 return RedirectToAction("Principal", "Home");
             }
             else
-            { 
+            {
                 var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaEstandar>().Result;
                 ViewBag.Mensaje = respuesta?.Mensaje;
                 return View();
