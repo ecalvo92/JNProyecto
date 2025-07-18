@@ -38,6 +38,7 @@ public class HomeController : Controller
             if (resultado.IsSuccessStatusCode)
             {
                 var datos = resultado.Content.ReadFromJsonAsync<RespuestaEstandar<Autenticacion>>().Result;
+                HttpContext.Session.SetString("IdUsuario", datos?.Contenido?.IdUsuario.ToString()!);
                 HttpContext.Session.SetString("Nombre", datos?.Contenido?.Nombre!);
                 HttpContext.Session.SetString("IdRol", datos?.Contenido?.IdRol.ToString()!);
                 HttpContext.Session.SetString("NombreRol", datos?.Contenido?.NombreRol!);
