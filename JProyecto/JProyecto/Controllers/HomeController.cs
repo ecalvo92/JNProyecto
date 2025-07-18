@@ -1,8 +1,11 @@
 using JProyecto.Models;
 using JProyecto.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JProyecto.Controllers;
+
+[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 public class HomeController : Controller
 {
     private readonly IConfiguration _configuration;
@@ -36,6 +39,8 @@ public class HomeController : Controller
             {
                 var datos = resultado.Content.ReadFromJsonAsync<RespuestaEstandar<Autenticacion>>().Result;
                 HttpContext.Session.SetString("Nombre", datos?.Contenido?.Nombre!);
+                HttpContext.Session.SetString("IdRol", datos?.Contenido?.IdRol.ToString()!);
+                HttpContext.Session.SetString("NombreRol", datos?.Contenido?.NombreRol!);
                 HttpContext.Session.SetString("JWT", datos?.Contenido?.Token!);
                 return RedirectToAction("Principal", "Home");
             }
@@ -113,6 +118,7 @@ public class HomeController : Controller
 
     #endregion
 
+    [Sesiones]
     [HttpGet]
     public IActionResult CerrarSesion()
     {
@@ -120,6 +126,7 @@ public class HomeController : Controller
         return RedirectToAction("Index", "Home");
     }
 
+    [Sesiones]
     [HttpGet]
     public IActionResult Principal()
     {

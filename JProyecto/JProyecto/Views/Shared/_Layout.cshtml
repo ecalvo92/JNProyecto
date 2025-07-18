@@ -16,9 +16,15 @@
 
     @{
         var nombreUsuario = "";
-        if (Context.Session.GetString("Nombre").ToString() != null)
+        var nombreRol = "";
+        if (Context.Session.GetString("Nombre") != null)
         {
-            nombreUsuario = Context.Session.GetString("Nombre").ToString();
+            nombreUsuario = Context.Session.GetString("Nombre");
+        }
+
+        if (Context.Session.GetString("NombreRol") != null)
+        {
+            nombreRol = Context.Session.GetString("NombreRol");
         }
     }
     
@@ -51,6 +57,11 @@
                 </div>
                 <div class="navbar-collapse collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav float-left mr-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="m-l-5 font-medium d-none d-sm-inline-block">@nombreRol </span>
+                            </a>
+                        </li>                        
                     </ul>
                     <ul class="navbar-nav float-right">
                         <li class="nav-item dropdown">

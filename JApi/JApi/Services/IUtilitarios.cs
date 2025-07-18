@@ -1,4 +1,5 @@
 ﻿using JApi.Models;
+using System.Security.Claims;
 
 namespace JApi.Services
 {
@@ -15,5 +16,8 @@ namespace JApi.Services
         string Encrypt(string texto);
 
         string GenerarToken(long IdUsuario);
+
+        long ObtenerIdUsuario(IEnumerable<Claim> token);
+
     }
 }
