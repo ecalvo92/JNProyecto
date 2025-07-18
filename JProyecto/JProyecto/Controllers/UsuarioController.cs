@@ -27,8 +27,8 @@ namespace JProyecto.Controllers
             using (var http = _http.CreateClient())
             {
                 var IdUsuario = HttpContext.Session.GetString("IdUsuario");
-                http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
 
+                http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
                 http.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("JWT"));
                 var resultado = http.GetAsync("api/Usuario/ConsultarUsuario?IdUsuario=" + IdUsuario).Result;
 
@@ -46,6 +46,31 @@ namespace JProyecto.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult ActualizarPerfilUsuario(Autenticacion autenticacion)
+        {
+            using (var http = _http.CreateClient())
+            {
+                var IdUsuario = HttpContext.Session.GetString("IdUsuario");
+                autenticacion.IdUsuario = long.Parse(IdUsuario!);
+
+                http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+                http.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("JWT"));
+                var resultado = http.PutAsJsonAsync("api/Usuario/ActualizarUsuario", autenticacion).Result;
+
+                if (resultado.IsSuccessStatusCode)
+                {
+                    HttpContext.Session.SetString("Nombre", autenticacion.Nombre!);
+                    return RedirectToAction("Principal", "Home");
+                }
+                else
+                {
+                    var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaEstandar>().Result;
+                    ViewBag.Mensaje = respuesta?.Mensaje;
+                    return View();
+                }
+            }
+        }
 
     }
 }

@@ -41,5 +41,29 @@ namespace JApi.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("ActualizarUsuario")]
+        public IActionResult ActualizarUsuario(Autenticacion autenticacion)
+        {
+            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = context.Execute("ActualizarUsuario",
+                    new
+                    {
+                        autenticacion.Identificacion,
+                        autenticacion.Nombre,
+                        autenticacion.Correo,
+                        autenticacion.IdUsuario
+                    });
+
+                if (resultado > 0)
+                    return Ok(_utilitarios.RespuestaCorrecta(null));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("Su información no fue actualizada"));
+            }
+        }
+
+        
+
     }
 }

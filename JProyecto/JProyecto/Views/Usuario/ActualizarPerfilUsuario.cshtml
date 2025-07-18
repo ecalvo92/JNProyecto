@@ -1,1 +1,53 @@
-﻿
+﻿@model Autenticacion
+@{
+    Layout = "_Layout";
+}
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Información Personal</h4>
+            </div>
+            <hr>
+
+        <form class="form-horizontal" id="loginform" asp-controller="Usuario" asp-action="ActualizarPerfilUsuario">
+            
+              <div class="card-body">
+                    <div class="form-group row">
+                        <label for="fullname" class="col-sm-3 text-right control-label col-form-label">Identificación</label>
+                        <div class="col-sm-6">
+                            <input type="text" asp-for="Identificacion" class="form-control"
+                               onkeyup="ConsultarNombreAPI()">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="title1" class="col-sm-3 text-right control-label col-form-label">Nombre Completo</label>
+                        <div class="col-sm-6">
+                            <input type="text" asp-for="Nombre" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="com12" class="col-sm-3 text-right control-label col-form-label">Correo Electrónico</label>
+                        <div class="col-sm-6">
+                            <input type="email" asp-for="Correo" class="form-control">
+                        </div>
+                    </div>
+                <div class="form-group row">
+                    <label for="com12" class="col-sm-3 text-right control-label col-form-label">Rol Usuario</label>
+                    <div class="col-sm-6">
+                        <input type="text" asp-for="NombreRol" readonly="readonly" class="form-control">
+                    </div>
+                </div>
+                </div>
+                <hr>
+                <div class="card-body">
+                    <div class="text-right">
+                        <button class="btn btn-info" type="submit">Procesar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<script src="~/lib/jquery.min.js"></script>
+<script src="~/js/registro.js"></script>

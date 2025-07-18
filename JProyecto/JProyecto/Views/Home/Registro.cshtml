@@ -25,7 +25,8 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="ti-id-badge"></i></span>
                             </div>
-                            <input type="text" asp-for="Identificacion" class="form-control form-control-lg" placeholder="Identificación">
+                            <input type="text" asp-for="Identificacion" class="form-control form-control-lg" placeholder="Identificación"
+                            onkeyup="ConsultarNombreAPI()">
                         </div>
 
                         <div class="input-group mb-3">
