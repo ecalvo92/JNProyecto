@@ -62,19 +62,5 @@ namespace JProyecto.Services
                 }
             }
         }
-
-        public long ObtenerIdUsuario(IEnumerable<Claim> token)
-        {
-            if (token.Any())
-            {
-                var idUsuarioClaim = token.FirstOrDefault(c => c.Type == "IdUsuario");
-                if (idUsuarioClaim != null && long.TryParse(idUsuarioClaim.Value, out long idUsuario))
-                {
-                    return idUsuario;
-                }
-            }
-
-            return 0;
-        }
     }
 }
