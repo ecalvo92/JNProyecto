@@ -83,5 +83,23 @@ namespace JApi.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("ConsultarUsuarios")]
+        public IActionResult ConsultarUsuarios()
+        {
+            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = context.Query<Autenticacion>("ConsultarUsuarios",
+                    new
+                    {
+                    });
+
+                if (resultado != null)
+                    return Ok(_utilitarios.RespuestaCorrecta(resultado));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("No hay información registrada"));
+            }
+        }       
+
     }
 }
