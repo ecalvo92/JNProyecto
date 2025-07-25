@@ -99,7 +99,46 @@ namespace JApi.Controllers
                 else
                     return BadRequest(_utilitarios.RespuestaIncorrecta("No hay información registrada"));
             }
-        }       
+        }
+
+        [HttpGet]
+        [Route("ConsultarRoles")]
+        public IActionResult ConsultarRoles()
+        {
+            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = context.Query<Rol>("ConsultarRoles",
+                    new
+                    {
+                    });
+
+                if (resultado != null)
+                    return Ok(_utilitarios.RespuestaCorrecta(resultado));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("No hay información registrada"));
+            }
+        }
+
+        [HttpPut]
+        [Route("ActualizarDatosUsuario")]
+        public IActionResult ActualizarDatosUsuario(Autenticacion autenticacion)
+        {
+            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = context.Execute("ActualizarDatosUsuario",
+                    new
+                    {
+                        autenticacion.IdRol,
+                        autenticacion.Estado,
+                        autenticacion.IdUsuario
+                    });
+
+                if (resultado > 0)
+                    return Ok(_utilitarios.RespuestaCorrecta(null));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("La información no fue actualizada"));
+            }
+        }        
 
     }
 }
