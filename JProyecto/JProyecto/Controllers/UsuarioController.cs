@@ -81,31 +81,20 @@ namespace JProyecto.Controllers
         [HttpGet]
         public IActionResult CambiarContrasenna()
         {
-            using (var http = _http.CreateClient())
-            {
-                var IdUsuario = HttpContext.Session.GetString("IdUsuario");
-
-                http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
-                http.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("JWT"));
-                var resultado = http.GetAsync("api/Usuario/ConsultarUsuario?IdUsuario=" + IdUsuario).Result;
-
-                if (resultado.IsSuccessStatusCode)
-                {
-                    var datos = resultado.Content.ReadFromJsonAsync<RespuestaEstandar<Autenticacion>>().Result;
-                    return View(datos?.Contenido!);
-                }
-                else
-                {
-                    var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaEstandar>().Result;
-                    ViewBag.Mensaje = respuesta?.Mensaje;
-                    return View();
-                }
-            }
+            return View();
         }
 
         [HttpPost]
         public IActionResult CambiarContrasenna(Autenticacion autenticacion)
         {
+            if (autenticacion.Contrasenna != autenticacion.ConfirmarContrasenna)
+            {
+                ViewBag.Mensaje = "Las contraseñas no coinciden.";
+                return View();
+            }
+
+            autenticacion.Contrasenna = _utilitarios.Encrypt(autenticacion.Contrasenna!);
+
             using (var http = _http.CreateClient())
             {
                 var IdUsuario = HttpContext.Session.GetString("IdUsuario");
@@ -113,11 +102,10 @@ namespace JProyecto.Controllers
 
                 http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
                 http.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("JWT"));
-                var resultado = http.PutAsJsonAsync("api/Usuario/ActualizarUsuario", autenticacion).Result;
+                var resultado = http.PutAsJsonAsync("api/Usuario/CambiarContrasenna", autenticacion).Result;
 
                 if (resultado.IsSuccessStatusCode)
                 {
-                    HttpContext.Session.SetString("Nombre", autenticacion.Nombre!);
                     return RedirectToAction("Principal", "Home");
                 }
                 else

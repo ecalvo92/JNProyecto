@@ -7387,7 +7387,7 @@ html[dir="ltr"] body .p-l-0 {
     position: fixed;
     width: 100%; }
   #main-wrapper[data-layout="vertical"][data-header-position="fixed"] .page-wrapper {
-    padding-top: 110px; }
+    padding-top: 80px; }
   #main-wrapper[data-layout="vertical"][data-boxed-layout="boxed"] {
     max-width: 1200px;
     margin: 0 auto;
