@@ -145,7 +145,7 @@ namespace JProyecto.Controllers
         }
 
         [HttpPost]
-        public IActionResult ActualizarDatosUsuario(Autenticacion autenticacion)
+        public IActionResult ActualizarDatosUsuario([FromBody] Autenticacion autenticacion)
         {
             using (var http = _http.CreateClient())
             {
