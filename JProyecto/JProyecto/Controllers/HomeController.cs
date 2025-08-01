@@ -1,6 +1,5 @@
 using JProyecto.Models;
 using JProyecto.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JProyecto.Controllers;
@@ -50,14 +49,14 @@ public class HomeController : Controller
                 var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaEstandar>().Result;
                 ViewBag.Mensaje = respuesta?.Mensaje;
                 return View();
-            }                
+            }
         }
     }
 
     #endregion
 
     #region Registro
-    
+
     [HttpGet]
     public IActionResult Registro()
     {

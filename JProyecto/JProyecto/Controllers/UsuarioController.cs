@@ -1,9 +1,6 @@
 ﻿using JProyecto.Models;
 using JProyecto.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using static System.Net.WebRequestMethods;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace JProyecto.Controllers
 {
@@ -120,6 +117,7 @@ namespace JProyecto.Controllers
         #endregion
 
         [HttpGet]
+        [Administradores]
         public IActionResult ConsultarUsuarios()
         {
             ViewBag.listaRoles = ConsultarRoles();
@@ -145,6 +143,7 @@ namespace JProyecto.Controllers
         }
 
         [HttpPost]
+        [Administradores]
         public IActionResult ActualizarDatosUsuario([FromBody] Autenticacion autenticacion)
         {
             using (var http = _http.CreateClient())

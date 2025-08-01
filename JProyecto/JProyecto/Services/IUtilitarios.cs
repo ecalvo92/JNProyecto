@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-namespace JProyecto.Services
+﻿namespace JProyecto.Services
 {
     public interface IUtilitarios
     {

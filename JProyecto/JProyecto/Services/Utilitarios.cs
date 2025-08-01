@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using System.Security.Claims;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
 namespace JProyecto.Services

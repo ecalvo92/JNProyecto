@@ -6,6 +6,7 @@ namespace JProyecto.Controllers
 {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     [Sesiones]
+    [Administradores]
     public class ProductoController : Controller
     {
         private readonly IConfiguration _configuration;
