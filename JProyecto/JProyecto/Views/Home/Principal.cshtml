@@ -1,4 +1,60 @@
-﻿@{
+﻿@model List<Producto>
+@{
     Layout = "_Layout";
 }
 
+<div class="col-12">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Productos Disponibles</h4>
+        </div>
+        <hr>
+
+        <input id="Mensaje" type="hidden" value="@ViewBag.Mensaje">
+
+        <div class="card-body">
+
+
+
+            <div class="container mt-4">
+                <div class="row">
+                    @foreach (var item in Model.Select((producto, index) => new { producto, index }))
+                    {
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100 shadow-sm">
+                                @* Imagen del producto *@
+                                @if (!string.IsNullOrEmpty(item.producto.Imagen))
+                                {
+                                    <img src="@item.producto.Imagen" class="card-img-top" alt="Imagen del producto">
+                                }
+
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">@item.producto.Nombre</h5>
+                                    <p class="card-text">@item.producto.Descripcion</p>
+
+                                    <ul class="list-group list-group-flush mb-3">
+                                        <li class="list-group-item">Precio: ₡@item.producto.Precio</li>
+                                        <li class="list-group-item">Inventario: @item.producto.Inventario</li>
+                                        <li class="list-group-item">Estado: @(item.producto.Estado ? "Activo" : "Inactivo")</li>
+                                    </ul>
+
+                                    <div class="mt-auto text-center">
+                                        <a href="@Url.Action("AgregarAlCarrito", "Carrito", new { id = item.producto.IdProducto })" class="btn btn-outline-primary">
+                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i> Agregar al carrito
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </div>
+</div>
+
+<script src="~/lib/jquery.min.js" asp-append-version="true"></script>

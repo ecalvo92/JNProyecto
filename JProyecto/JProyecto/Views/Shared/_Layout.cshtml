@@ -41,7 +41,7 @@
                         <i class="ti-menu ti-close"></i>
                     </a>
                     <div class="navbar-brand">
-                        <a href="index.html" class="logo">
+                        <a href="@Url.Action("Principal","Home")" class="logo">
                             <b class="logo-icon">
                                 <img src="~/img/logo-icon.png" alt="homepage" class="dark-logo" />
                                 <img src="~/img/logo-light-icon.png" alt="homepage" class="light-logo" />
@@ -104,20 +104,37 @@
                     <ul id="sidebarnav">
 
                         @if (idRol == "2")
-                        { 
-                          <li class="sidebar-item">
-                              <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("ConsultarUsuarios","Usuario")" aria-expanded="false">
-                                  <i class="fa fa-users"></i>
-                                  <span class="hide-menu">Mant. Usuarios</span>
-                              </a>
-                          </li>
+                        {
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("ConsultarUsuarios","Usuario")" aria-expanded="false">
+                                    <i class="fa fa-users"></i>
+                                    <span class="hide-menu">Mant. Usuarios</span>
+                                </a>
+                            </li>
 
-                          <li class="sidebar-item">
-                              <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("ConsultarProductos", "Producto")" aria-expanded="false">
-                                  <i class="fa fa-tags"></i>
-                                  <span class="hide-menu">Mant. Productos</span>
-                              </a>
-                          </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("ConsultarProductos", "Producto")" aria-expanded="false">
+                                    <i class="fa fa-tags"></i>
+                                    <span class="hide-menu">Mant. Productos</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("", "")" aria-expanded="false">
+                                    <i class="fa fa-shopping-cart"></i>
+                                    <span class="hide-menu">Mi Carrito</span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("", "")" aria-expanded="false">
+                                    <i class="fa fa-list-alt"></i>
+                                    <span class="hide-menu">Mis Compras</span>
+                                </a>
+                            </li>
+
                         }
 
                     </ul>
