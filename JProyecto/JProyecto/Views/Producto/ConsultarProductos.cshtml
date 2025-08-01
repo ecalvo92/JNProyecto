@@ -1,0 +1,57 @@
+﻿@model List<Producto>
+@{
+    Layout = "_Layout";
+}
+
+<div class="col-12">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Consulta de Productos</h4>
+        </div>
+        <hr>
+
+        <input id="Mensaje" type="hidden" value="@ViewBag.Mensaje">
+
+        <div class="card-body">
+
+            <table id="TablaDatos" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                        <th>Inventario</th>
+                        <th>Imagen</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.IdProducto</td>
+                            <td>@item.Nombre</td>
+                            <td>@item.Descripcion</td>
+                            <td>@item.Precio</td>
+                            <td>@item.Inventario</td>
+                            <td>@item.Imagen</td>
+                            <td>@(item.Estado ? "Activo" : "Inactivo")</td>
+                            <td class="text-center">
+                                
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="~/lib/jquery.min.js" asp-append-version="true"></script>
+<script src="~/js/consultaProductos.js" asp-append-version="true"></script>
