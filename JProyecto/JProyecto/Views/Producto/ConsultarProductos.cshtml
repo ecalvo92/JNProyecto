@@ -14,6 +14,12 @@
 
         <div class="card-body">
 
+            <div class="mb-3">
+                <a class="btn btn-primary" href="@Url.Action("RegistrarProducto", "Producto")">
+                    <i class="fa fa-plus"></i> Agregar
+                </a>
+            </div>
+
             <table id="TablaDatos" class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -37,7 +43,7 @@
                             <td>@item.Descripcion</td>
                             <td>@item.Precio</td>
                             <td>@item.Inventario</td>
-                            <td>@item.Imagen</td>
+                            <td style="text-align:center"><img src="@item.Imagen" width="175" height="175" /></td>
                             <td>@(item.Estado ? "Activo" : "Inactivo")</td>
                             <td class="text-center">
                                 

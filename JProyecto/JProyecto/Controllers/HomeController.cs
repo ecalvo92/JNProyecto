@@ -130,6 +130,9 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult Principal()
     {
+        if(HttpContext.Session.GetString("IdRol") == "2")
+            return RedirectToAction("Dashboard", "Admin");
+
         using (var http = _http.CreateClient())
         {
             http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);

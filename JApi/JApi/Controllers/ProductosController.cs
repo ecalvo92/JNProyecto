@@ -39,5 +39,28 @@ namespace JApi.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("RegistrarProducto")]
+        [Authorize]
+        public IActionResult RegistrarProducto(Producto producto)
+        {
+            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = context.QueryFirstOrDefault<Producto>("RegistrarProducto",
+                    new
+                    {
+                        producto.Nombre,
+                        producto.Descripcion,
+                        producto.Precio,
+                        producto.Inventario
+                    });
+
+                if (resultado != null)
+                    return Ok(_utilitarios.RespuestaCorrecta(resultado));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("La información del producto no fue registrada"));
+            }
+        }        
+
     }
 }
