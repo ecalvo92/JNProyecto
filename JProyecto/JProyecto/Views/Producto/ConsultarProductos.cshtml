@@ -41,7 +41,7 @@
                             <td>@item.IdProducto</td>
                             <td>@item.Nombre</td>
                             <td>@item.Descripcion</td>
-                            <td>@item.Precio</td>
+                            <td> $ @item.Precio.ToString("N2")</td>
                             <td>@item.Inventario</td>
                             <td style="text-align:center"><img src="@item.Imagen" width="175" height="175" /></td>
                             <td>@(item.Estado ? "Activo" : "Inactivo")</td>

@@ -10,12 +10,10 @@ namespace JProyecto.Controllers
     public class ProductoController : Controller
     {
         private readonly IConfiguration _configuration;
-        private readonly IUtilitarios _utilitarios;
         private readonly IHttpClientFactory _http;
-        public ProductoController(IConfiguration configuration, IUtilitarios utilitarios, IHttpClientFactory http)
+        public ProductoController(IConfiguration configuration, IHttpClientFactory http)
         {
             _configuration = configuration;
-            _utilitarios = utilitarios;
             _http = http;
         }
 

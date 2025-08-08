@@ -33,7 +33,7 @@
                                     <p class="card-text">@item.producto.Descripcion</p>
 
                                     <ul class="list-group list-group-flush mb-3">
-                                        <li class="list-group-item">Precio: ₡@item.producto.Precio</li>
+                                        <li class="list-group-item">Precio: $ @item.producto.Precio.ToString("N2")</li>
                                         <li class="list-group-item">Inventario: @item.producto.Inventario</li>
                                         <li class="list-group-item">Estado: @(item.producto.Estado ? "Activo" : "Inactivo")</li>
                                     </ul>
