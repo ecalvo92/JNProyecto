@@ -7,6 +7,19 @@ GO
 USE [JNDataBase]
 GO
 
+CREATE TABLE [dbo].[TCarrito](
+	[IdCarrito] [bigint] IDENTITY(1,1) NOT NULL,
+	[IdUsuario] [bigint] NOT NULL,
+	[IdProducto] [bigint] NOT NULL,
+	[Cantidad] [int] NOT NULL,
+	[Fecha] [datetime] NOT NULL,
+ CONSTRAINT [PK_TCarrito] PRIMARY KEY CLUSTERED 
+(
+	[IdCarrito] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
 CREATE TABLE [dbo].[TError](
 	[IdError] [bigint] IDENTITY(1,1) NOT NULL,
 	[FechaHora] [datetime] NOT NULL,
@@ -60,6 +73,17 @@ CREATE TABLE [dbo].[TUsuario](
 ) ON [PRIMARY]
 GO
 
+SET IDENTITY_INSERT [dbo].[TCarrito] ON 
+GO
+INSERT [dbo].[TCarrito] ([IdCarrito], [IdUsuario], [IdProducto], [Cantidad], [Fecha]) VALUES (1, 2, 1, 3, CAST(N'2025-08-07T20:54:32.420' AS DateTime))
+GO
+INSERT [dbo].[TCarrito] ([IdCarrito], [IdUsuario], [IdProducto], [Cantidad], [Fecha]) VALUES (2, 2, 2, 2, CAST(N'2025-08-07T20:54:44.500' AS DateTime))
+GO
+INSERT [dbo].[TCarrito] ([IdCarrito], [IdUsuario], [IdProducto], [Cantidad], [Fecha]) VALUES (3, 2, 3, 1, CAST(N'2025-08-07T20:54:45.783' AS DateTime))
+GO
+SET IDENTITY_INSERT [dbo].[TCarrito] OFF
+GO
+
 SET IDENTITY_INSERT [dbo].[TError] ON 
 GO
 INSERT [dbo].[TError] ([IdError], [FechaHora], [DescripcionError], [Origen], [IdUsuario]) VALUES (1, CAST(N'2025-06-19T18:41:45.287' AS DateTime), N'Procedure or function ''ValidarInicioSesion'' expects parameter ''@Contrasenna'', which was not supplied.', N'/api/Home/Index', 0)
@@ -73,9 +97,11 @@ GO
 
 SET IDENTITY_INSERT [dbo].[TProducto] ON 
 GO
-INSERT [dbo].[TProducto] ([IdProducto], [Nombre], [Descripcion], [Precio], [Inventario], [Imagen], [Estado]) VALUES (1, N'PS4', N'Consola de videojuegos del año 2016', CAST(130000.00 AS Decimal(10, 2)), 4, N'-', 1)
+INSERT [dbo].[TProducto] ([IdProducto], [Nombre], [Descripcion], [Precio], [Inventario], [Imagen], [Estado]) VALUES (1, N'Ps5', N'Play Station 5', CAST(700.00 AS Decimal(10, 2)), 6, N'/productos/1.png', 1)
 GO
-INSERT [dbo].[TProducto] ([IdProducto], [Nombre], [Descripcion], [Precio], [Inventario], [Imagen], [Estado]) VALUES (2, N'PS5', N'Consola de videojuegos del año 2022', CAST(225000.00 AS Decimal(10, 2)), 8, N'-', 1)
+INSERT [dbo].[TProducto] ([IdProducto], [Nombre], [Descripcion], [Precio], [Inventario], [Imagen], [Estado]) VALUES (2, N'Ps4', N'Play Station 4', CAST(400.00 AS Decimal(10, 2)), 2, N'/productos/2.png', 1)
+GO
+INSERT [dbo].[TProducto] ([IdProducto], [Nombre], [Descripcion], [Precio], [Inventario], [Imagen], [Estado]) VALUES (3, N'ps 2', N'Play Station 2', CAST(1200.00 AS Decimal(10, 2)), 10, N'/productos/3.png', 1)
 GO
 SET IDENTITY_INSERT [dbo].[TProducto] OFF
 GO
@@ -108,6 +134,18 @@ ALTER TABLE [dbo].[TUsuario] ADD  CONSTRAINT [uk_NombreUsuario] UNIQUE NONCLUSTE
 (
 	[Identificacion] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[TCarrito]  WITH CHECK ADD  CONSTRAINT [FK_TCarrito_TProducto] FOREIGN KEY([IdProducto])
+REFERENCES [dbo].[TProducto] ([IdProducto])
+GO
+ALTER TABLE [dbo].[TCarrito] CHECK CONSTRAINT [FK_TCarrito_TProducto]
+GO
+
+ALTER TABLE [dbo].[TCarrito]  WITH CHECK ADD  CONSTRAINT [FK_TCarrito_TUsuario] FOREIGN KEY([IdUsuario])
+REFERENCES [dbo].[TUsuario] ([IdUsuario])
+GO
+ALTER TABLE [dbo].[TCarrito] CHECK CONSTRAINT [FK_TCarrito_TUsuario]
 GO
 
 ALTER TABLE [dbo].[TUsuario]  WITH CHECK ADD  CONSTRAINT [FK_TUsuario_TRol] FOREIGN KEY([IdRol])
@@ -144,6 +182,25 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [dbo].[ActualizarProducto]
+	@IdProducto BIGINT,
+	@Nombre varchar(50),
+	@Descripcion varchar(255),
+	@Precio decimal(10,2),
+	@Inventario int
+AS
+BEGIN
+
+	UPDATE	dbo.TProducto
+	SET		Nombre = @Nombre,
+			Descripcion = @Descripcion,
+			Precio = @Precio,
+			Inventario = @Inventario
+	WHERE	IdProducto = @IdProducto
+
+END
+GO
+
 CREATE PROCEDURE [dbo].[ActualizarUsuario]
 	@Identificacion varchar(20),
 	@Nombre varchar(255),
@@ -166,6 +223,24 @@ BEGIN
 
 	END
 
+END
+GO
+
+CREATE PROCEDURE [dbo].[ConsultarProducto]
+	@IdProducto BIGINT
+AS
+BEGIN
+
+	SELECT	IdProducto,
+			Nombre,
+			Descripcion,
+			Precio,
+			Inventario,
+			Imagen,
+			Estado
+	  FROM	dbo.TProducto
+	  WHERE IdProducto = @IdProducto
+	
 END
 GO
 
@@ -246,6 +321,59 @@ BEGIN
 
 	INSERT INTO dbo.TError (FechaHora,DescripcionError,Origen,IdUsuario)
 	VALUES (GETDATE(),@DescripcionError,@Origen,@IdUsuario)
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[RegistrarProducto]
+	@Nombre varchar(50),
+	@Descripcion varchar(255),
+	@Precio decimal(10,2),
+	@Inventario int
+AS
+BEGIN
+
+	DECLARE @RUTA VARCHAR(255) = '/productos/'
+	
+	INSERT INTO dbo.TProducto(Nombre,Descripcion,Precio,Inventario,Imagen,Estado)
+    VALUES (@Nombre,@Descripcion,@Precio,@Inventario,'',1)
+
+	DECLARE @IdProductoGenerado BIGINT = @@IDENTITY
+
+	UPDATE	dbo.TProducto
+	SET		Imagen = @RUTA + CONVERT(VARCHAR,@IdProductoGenerado) + '.png'
+	WHERE	IdProducto = @IdProductoGenerado
+
+	SELECT @IdProductoGenerado 'IdProducto'
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[RegistrarProductoCarrito]
+	@IdUsuario bigint,
+	@IdProducto bigint
+AS
+BEGIN
+
+	IF NOT EXISTS(SELECT 1 FROM TCarrito 
+				  WHERE IdUsuario = @IdUsuario 
+					AND IdProducto = @IdProducto)
+	BEGIN
+
+		INSERT INTO dbo.TCarrito(IdUsuario,IdProducto,Cantidad,Fecha)
+		VALUES (@IdUsuario,@IdProducto,1,GETDATE())
+
+	END
+	ELSE
+	BEGIN
+		
+		UPDATE	dbo.TCarrito
+		SET		Cantidad = Cantidad + 1,
+				Fecha = GETDATE()
+		WHERE	IdUsuario = @IdUsuario 
+			AND IdProducto = @IdProducto
+
+	END
 
 END
 GO
