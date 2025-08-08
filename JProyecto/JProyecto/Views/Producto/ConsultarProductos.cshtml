@@ -46,7 +46,9 @@
                             <td style="text-align:center"><img src="@item.Imagen" width="175" height="175" /></td>
                             <td>@(item.Estado ? "Activo" : "Inactivo")</td>
                             <td class="text-center">
-                                
+                                <a href="@Url.Action("ActualizarProducto","Producto", new { q = item.IdProducto })">
+                                  <i class="fa fa-edit"></i> Actualizar
+                                </a>
                             </td>
                         </tr>
                     }
