@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using JProyecto.Models;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace JProyecto.Services
@@ -6,9 +7,13 @@ namespace JProyecto.Services
     public class Utilitarios : IUtilitarios
     {
         private readonly IConfiguration _configuration;
-        public Utilitarios(IConfiguration configuration)
+        private readonly IHttpContextAccessor _accesor;
+        private readonly IHttpClientFactory _http;
+        public Utilitarios(IConfiguration configuration, IHttpContextAccessor accesor, IHttpClientFactory http)
         {
             _configuration = configuration;
+            _accesor = accesor;
+            _http = http;
         }
 
         public string Encrypt(string texto)
@@ -60,5 +65,37 @@ namespace JProyecto.Services
                 }
             }
         }
+
+        public List<Carrito> ConsultarDatosCarrito()
+        {
+            using (var http = _http.CreateClient())
+            {
+                var IdUsuario = _accesor.HttpContext!.Session.GetString("IdUsuario");
+                var carrito = new Carrito
+                {
+                    IdUsuario = long.Parse(IdUsuario!)
+                };
+
+                http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+                http.DefaultRequestHeaders.Add("Authorization", "Bearer " + _accesor.HttpContext!.Session.GetString("JWT"));
+                var resultado = http.PostAsJsonAsync("api/Carrito/ConsultarCarrito", carrito).Result;
+
+                if (resultado.IsSuccessStatusCode)
+                {
+                    var datos = resultado.Content.ReadFromJsonAsync<RespuestaEstandar<List<Carrito>>>().Result;
+
+                    _accesor.HttpContext!.Session.SetString("Cantidad", datos?.Contenido?.Sum(x => x.Cantidad).ToString()!);
+                    _accesor.HttpContext!.Session.SetString("Total", datos?.Contenido?.Sum(x => x.Total).ToString()!);
+                    return datos?.Contenido!;
+                }
+                else
+                {
+                    _accesor.HttpContext!.Session.SetString("Cantidad", "0");
+                    _accesor.HttpContext!.Session.SetString("Total", "0");
+                    return new List<Carrito>();
+                }
+            }
+        }
+
     }
 }

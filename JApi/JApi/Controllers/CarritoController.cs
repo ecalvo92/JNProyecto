@@ -24,7 +24,6 @@ namespace JApi.Controllers
 
         [HttpPost]
         [Route("RegistrarProductoCarrito")]
-        [Authorize]
         public IActionResult RegistrarProductoCarrito(Carrito carrito)
         {
             using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
@@ -40,6 +39,25 @@ namespace JApi.Controllers
                     return Ok(_utilitarios.RespuestaCorrecta(null));
                 else
                     return BadRequest(_utilitarios.RespuestaIncorrecta("El producto no fue agregado a su carrito"));
+            }
+        }
+
+        [HttpPost]
+        [Route("ConsultarCarrito")]
+        public IActionResult ConsultarCarrito(Carrito carrito)
+        {
+            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = context.Query<Carrito>("ConsultarCarrito",
+                    new
+                    {
+                        carrito.IdUsuario
+                    });
+
+                if (resultado.Any())
+                    return Ok(_utilitarios.RespuestaCorrecta(resultado));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("No tiene productos registrados en su carrito"));
             }
         }
 

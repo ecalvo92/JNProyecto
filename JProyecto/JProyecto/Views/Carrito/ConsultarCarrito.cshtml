@@ -1,0 +1,57 @@
+﻿@model List<Carrito>
+@{
+    Layout = "_Layout";
+}
+
+<div class="col-12">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Mi Carrito</h4>
+        </div>
+        <hr>
+
+        <input id="Mensaje" type="hidden" value="@ViewBag.Mensaje">
+
+        <div class="card-body">
+
+            <table id="TablaDatos" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>SubTotal</th>
+                        <th>Impuesto</th>
+                        <th>Total</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Nombre</td>
+                            <td>@item.Cantidad</td>
+                            <td>$ @item.Precio.ToString("N2")</td>
+                            <td>$ @item.SubTotal.ToString("N2")</td>
+                            <td>$ @item.Impuesto.ToString("N2")</td>
+                            <td>$ @item.Total.ToString("N2")</td>
+                            <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
+                            <td class="text-center">
+                               
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="~/lib/jquery.min.js" asp-append-version="true"></script>
+<script src="~/js/consultaCarrito.js" asp-append-version="true"></script>

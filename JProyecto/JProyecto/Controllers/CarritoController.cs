@@ -10,10 +10,12 @@ namespace JProyecto.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IHttpClientFactory _http;
-        public CarritoController(IConfiguration configuration, IHttpClientFactory http)
+        private readonly IUtilitarios _utilitarios;
+        public CarritoController(IConfiguration configuration, IHttpClientFactory http, IUtilitarios utilitarios)
         {
             _configuration = configuration;
             _http = http;
+            _utilitarios = utilitarios;
         }
 
         [HttpGet]
@@ -43,5 +45,13 @@ namespace JProyecto.Controllers
                 }
             }
         }
+
+        [HttpGet]
+        public IActionResult ConsultarCarrito()
+        {
+            var resultado = _utilitarios.ConsultarDatosCarrito();
+            return View(resultado);
+        }
+        
     }
 }
