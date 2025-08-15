@@ -52,6 +52,36 @@ namespace JProyecto.Controllers
             var resultado = _utilitarios.ConsultarDatosCarrito();
             return View(resultado);
         }
-        
+
+        [HttpGet]
+        public IActionResult EliminarProductoCarrito(long id)
+        {
+            using (var http = _http.CreateClient())
+            {
+                var carrito = new Carrito
+                {
+                    IdUsuario = long.Parse(HttpContext.Session.GetString("IdUsuario")!),
+                    IdProducto = id
+                };
+
+                http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+                http.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("JWT"));
+                var resultado = http.PostAsJsonAsync("api/Carrito/EliminarProductoCarrito", carrito).Result;
+
+                if (resultado.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("ConsultarCarrito", "Carrito");
+                }
+                else
+                {
+                    var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaEstandar>().Result;
+                    ViewBag.Mensaje = respuesta?.Mensaje;
+
+                    var datosCarrito = _utilitarios.ConsultarDatosCarrito();
+                    return View("ConsultarCarrito", datosCarrito);
+                }
+            }
+        }
+
     }
 }

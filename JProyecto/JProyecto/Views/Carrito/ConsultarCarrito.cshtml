@@ -41,6 +41,10 @@
                             <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
                             <td class="text-center">
                                
+                              <a href="@Url.Action("EliminarProductoCarrito", "Carrito", new { id = item.IdProducto })">
+                                <i class="fa fa-trash"></i> Eliminar
+                              </a>
+
                             </td>
                         </tr>
                     }

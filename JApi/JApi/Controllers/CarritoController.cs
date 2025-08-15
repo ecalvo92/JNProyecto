@@ -61,7 +61,29 @@ namespace JApi.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("EliminarProductoCarrito")]
+        public IActionResult EliminarProductoCarrito(Carrito carrito)
+        {
+            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = context.Execute("EliminarProductoCarrito",
+                    new
+                    {
+                        carrito.IdProducto,
+                        carrito.IdUsuario
+                    });
+
+                if (resultado > 0)
+                    return Ok(_utilitarios.RespuestaCorrecta(null));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("El producto no fue eliminado de su carrito"));
+            }
+        }
+
         
+
+
 
     }
 }
