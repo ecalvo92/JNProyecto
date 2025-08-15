@@ -6,7 +6,7 @@
 <div class="col-12">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Mi Carrito</h4>
+            <h4 class="card-title">Mis Compras</h4>
         </div>
         <hr>
 
@@ -17,13 +17,12 @@
             <table id="TablaDatos" class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
+                        <th>#</th>
+                        <th>Fecha</th>
                         <th>Cantidad</th>
-                        <th>Precio</th>
                         <th>SubTotal</th>
                         <th>Impuesto</th>
                         <th>Total</th>
-                        <th>Fecha</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -32,18 +31,17 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@item.Nombre</td>
+                            <td>@item.IdMaestro</td>
+                            <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
                             <td>@item.Cantidad</td>
-                            <td>$ @item.Precio.ToString("N2")</td>
                             <td>$ @item.SubTotal.ToString("N2")</td>
                             <td>$ @item.Impuesto.ToString("N2")</td>
-                            <td>$ @item.Total.ToString("N2")</td>
-                            <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
+                            <td>$ @item.Total.ToString("N2")</td>                            
                             <td class="text-center">
-                               
-                              <a href="@Url.Action("EliminarProductoCarrito", "Carrito", new { id = item.IdProducto })">
-                                <i class="fa fa-trash"></i> Eliminar
-                              </a>
+
+                                <a href="@Url.Action("ConsultarDetalleFactura", "Carrito", new { id = item.IdMaestro })">
+                                    <i class="fa fa-check"></i> Detalle
+                                </a>
 
                             </td>
                         </tr>
@@ -51,15 +49,6 @@
 
                 </tbody>
             </table>
-
-            @if (Context.Session.GetString("Cantidad") != "0")
-            { 
-              <div class="mt-3">
-                  <a href="@Url.Action("ProcesarPagoCarrito", "Carrito")">
-                        <i class="fa fa-credit-card mr-2"></i> Procesar Pago: El monto a cancelar es: $ @decimal.Parse(Context.Session.GetString("Total")!).ToString("N2")
-                  </a>
-              </div>
-            }
 
         </div>
 

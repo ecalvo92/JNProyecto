@@ -81,9 +81,62 @@ namespace JApi.Controllers
             }
         }
 
-        
+        [HttpPost]
+        [Route("ProcesarPagoCarrito")]
+        public IActionResult ProcesarPagoCarrito(Carrito carrito)
+        {
+            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = context.Execute("ProcesarPagoCarrito",
+                    new
+                    {
+                        carrito.IdUsuario
+                    });
 
+                if (resultado > 0)
+                    return Ok(_utilitarios.RespuestaCorrecta(null));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("El carrito no fue pagado correctamente"));
+            }
+        }
 
+        [HttpPost]
+        [Route("ConsultarFacturas")]
+        public IActionResult ConsultarFacturas(Carrito carrito)
+        {
+            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = context.Query<Carrito>("ConsultarFacturas",
+                    new
+                    {
+                        carrito.IdUsuario
+                    });
+
+                if (resultado.Any())
+                    return Ok(_utilitarios.RespuestaCorrecta(resultado));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("No tiene facturas registradas"));
+            }
+        }
+
+        [HttpPost]
+        [Route("ConsultarDetalleFactura")]
+        public IActionResult ConsultarDetalleFactura(Carrito carrito)
+        {
+            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = context.Query<Carrito>("ConsultarDetalleFactura",
+                    new
+                    {
+                        carrito.IdMaestro
+                    });
+
+                if (resultado.Any())
+                    return Ok(_utilitarios.RespuestaCorrecta(resultado));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("No tiene facturas registradas"));
+            }
+        }
 
     }
 }
